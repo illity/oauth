@@ -1,80 +1,140 @@
 # Benchmarking do mercado de oauth
 
-## Amazon Incognito
+## 1. Amazon Cognito
 
-### Cadastro de novo software
+### 1.1. Cadastro de novo software
+
+##### 1.1.1. Seleção de nome e tipo
 
 ![1745557763110](image/geral/1745557763110.png)
 
-O cadastro de software tem somente essa tela
+O cadastro de software tem somente essa tela, não havendo configurações adicionais durante a criação do cliente.
 
-### ClientSecret
+### 1.2. ClientSecret
 
 ![1745557802899](image/geral/1745557802899.png)
 
-You can't change secrets after you create an app. You can create a new app with a new secret if you want to rotate the secret. You can also delete an app to block access from apps that use that app client ID.
+No caso do Amazon cognito, não é possível criar um clientSecret extra para uma aplicação. Os clientSecrets não tem data de expiração. É necessário criar uma nova aplicação para que possa ser rotacionado o secret, conforme indicado na documentação.
 
-[Application-specific settings with app clients - Amazon Cognito](https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-settings-client-apps.html)
+You can't change secrets after you create an app. You can create a new app with a new secret if you want to rotate the secret. You can also delete an app to block access from apps that use that app client ID.[^1]
 
-## Oauth0
+### 1.3. Auditoria e Monitoramento
 
-### Cadastro de novo software
+O Amazon Cognito não oferece serviço gratuito de monitoramento, mas eles possuem um Plano Plus onde os logs ficam disponíveis para usuários pagos.
+
+![1745581679060](image/geral/1745581679060.png)
+
+### 1.4. Comportamento de inatividade
+
+Há uma recomendação pela exclusão de credenciais de usuário que estão em inatividade, mas não é indicado um período e não há nenhuma ação por parte da AWS em relação a exclusão do usuário, ficando essa decisão totalmente a cargo da aplicação.
+
+![1745860190412](image/geral/1745860190412.png)
+
+To increase the security of your AWS account, remove IAM user credentials (that is, passwords and access keys) that are not needed. For example, when users leave your organization or no longer need AWS access, find the credentials that they were using and ensure that they are no longer operational. Ideally, you delete credentials if they are no longer needed.[^9]
+
+## 2. Oauth0
+
+### 2.1. Cadastro de novo software
+
+Durante o cadastro do software, há a seleção do nome da aplicação e é possível escolher o tipo de aplicação. Isso é relevante pois eles apresentam um tutorial conciso de utilização de acordo com a tecnologia a ser utilizada, facilitando a vida do desenvolvedor que deseja iniciar sua joranda com a ferramenta.
+
+##### 2.1.1. Seleção de nome e tipo
 
 ![1745553013436](image/geral/1745553013436.png)
 
-![1745553050666](image/geral/1745553050666.png)
+##### 2.1.2. Seleção de tecnologia
+
+##### 2.1.3. Tutorial e samples na tecnologia
+
+Ao criar uma aplicação e selecionar a linguagem, você é levado a um tutorial de como utilizar o oauth na sua aplicação, com snippets de código e passo-a-passo.
 
 ![1745553054536](image/geral/1745553054536.png)
 
-Ao criar uma aplicação e selecionar a linguagem, você é levado a um tutorial de como implementar
+### 2.2. ClientSecret
 
-### ClientSecret
-
-A aplicação contém um cliente secret
+A aplicação contém um clientSecret único, que pode ser visualizado na tela inicial da aplicação
 
 ![1745553117483](image/geral/1745553117483.png)
 
+##### 2.2.1. Rotação de ClientSecret
+
+É possível alterar um clienteSecret, não sendo possível manter a utilização do clientSecret antigo após a rotação.
+
 ![1745553237792](image/geral/1745553237792.png)
+
+Eles possuem uma área de rotação dentro da página do aplicativo. Está dentro de uma "área de perigo" indicando o risco ao se utilizar a área sem conhecimento do que está fazendo. Isso ajuda o usuário a se atentar para não rotacionar o ClientSecret por acidente.
 
 ![1745553260373](image/geral/1745553260373.png)
 
 ![1745553279984](image/geral/1745553279984.png)
 
+##### 2.2.2. Rotação de ClientSecret via API
+
 Além disso é possível rotacionar o secret via API, tornando mais fácil que as empresas possam implementar uma rotação a cada determinado período de forma automatizada
 
 ![1745553366363](image/geral/1745553366363.png)
 
-Além disso, é possível criar um secret
+##### 2.2.3. Criação de secrets personalizados
 
 ![1745553393424](image/geral/1745553393424.png)
 
-Os clientSecrets não expiram
+Não há expiração de clientSecrets
 
-### Auditoria e Monitoramento
+### 2.3. Auditoria e Monitoramento
 
-Há um paínel de logs para consulta
+##### 2.3.1. Paínel de logs
+
+Há um paínel de logs para consulta de logs da aplicação, sendo possível verificar todas as operações feitas tanto na plataforma do aplicativo como geração de tokens.
 
 ![1745553999933](image/geral/1745553999933.png)
 
-## Okta
+### 2.4. Comportamento de inatividade
 
-### Cadastro de novo software
+Foram pesquisados os seguintes termos e não foi localizada nenhuma informação em relação ao inatividade.
 
-![1745554325354](image/geral/1745554325354.png)![1745554715185](image/geral/1745554715185.png)
+[Auth0 Docs](https://auth0.com/docs)
 
-### ClientSecret
+* Inactivity
+* Suspension
+* Lifecycle
+* Cleanup
+* Expiry
+
+Durante a pesquisa foi encontrado essa forma de o cliente conseguir fazer a deleção após tempo de inatividade
+
+[Deleting Inactive Users in Auth0 with Okta Workflows – IAMSE](https://iamse.blog/2024/05/01/deleting-inactive-users-in-auth0-with-okta-workflows/)
+
+## 3. Okta
+
+### 3.1. Cadastro de novo software
+
+##### 3.1.1. Seleção de tipo de sign-in e tipo de aplicação
+
+![1745554325354](image/geral/1745554325354.png)
+
+##### 3.1.2. Escolha do nome da aplicação e configuração dos grantType permitidos
+
+![1745554715185](image/geral/1745554715185.png)
+
+### 3.2. ClientSecret
+
+##### 3.2.1. É possível utilizar tanto o clientSecret como par de chaves para a autenticação via client credentials
 
 ![1745555137765](image/geral/1745555137765.png)
 
-É possível gerar um novo secret
+##### 3.2.2. É possível gerar um novo secret
+
+É possível gerar somente dois secrets simultâneos, sendo possível inativar e excluir um secret antigo.
 
 ![1745555160373](image/geral/1745555160373.png)
 
-É encorajado ao usuário a alteração do clientSecret periodicamente mas não é enforced "Just like periodically changing passwords, regularly rotating the client secret that your app uses to authenticate is a security best practice"
+##### 3.2.3. Alteração períodica de secret
 
-[Client secret rotation and key management | Okta Developer](https://developer.okta.com/docs/guides/client-secret-rotation-key/main/)
+É encorajado ao usuário a alteração do clientSecret periodicamente mas não é uma política enforced
 
-Utilizando
+"Just like periodically changing passwords, regularly rotating the client secret that your app uses to authenticate is a security best practice"[^2]
+
+Requerimento de política definida para utilização
 
 ![1745559091183](image/geral/1745559091183.png)
 
@@ -86,63 +146,89 @@ Utilizando
 
 ![1745559225370](image/geral/1745559225370.png)
 
-### Auditoria e Monitoramento
+### 3.3. Auditoria e Monitoramento
+
+##### 3.3.1. Sistema de busca de logs
+
+É possível fazer pesquisas de log de maneiras diversas, permitindo uma autonomia de busca do cliente, sendo possível mapear de maneira completa a aplicação.
 
 ![1745559625290](image/geral/1745559625290.png)
 
+##### 3.3.2. Download de logs
+
+É permitido o download do csv dos logs (não foi estressado os limites desse download) que permite que o cliente investigue incidentes.
+
 ![1745559442517](image/geral/1745559442517.png)
 
-É possível filtrar por erros e baixar o csv
+##### 3.3.3. Exemplo de filtro por erros, onde o cliente consegue se informar a motivação dos erros ocorridos.
 
 ![1745559671923](image/geral/1745559671923.png)
 
 ![1745559678837](image/geral/1745559678837.png)
 
-## PingIdentity
+### 3.4. Comportamento de inatividade
 
-### Cadastro de novo software
+Não foi encontrado na documentação nenhum comportamento em caso de inatividade da aplicação. No suporte deles, um usuário perguntou como faria o gerenciamento das aplicações não usadas mas ativas e foi sugerido a utilizar o monitoramento deles para verificar as aplicações usadas nos últimos 90 dias.
+
+[to cleanup/manage the amount of unused but active Okta applications in our tenant](https://support.okta.com/help/s/question/0D54z0000ABw3B6CQJ/need-to-cleanupmanage-the-amount-of-unused-but-active-okta-applications-in-our-tenant?language=en_US)
+
+[Application Usage report | Okta Classic Engine](https://help.okta.com/en-us/content/topics/reports/app-usage-report.htm)
+
+## 4. PingIdentity
+
+### 4.1. Cadastro de novo software
+
+##### 4.1.1. Escolha do tipo de registração
 
 ![1745549353946](image/geral/1745549353946.png)
+
+##### 4.1.2. Escolha do tipo de autenticação do cliente.
 
 No registro de um novo aplicativo, eles permitem a escolha pelo cliente pela optação do MFA ou não
 
 ![1745549402444](image/geral/1745549402444.png)
 
-![1745549426217](image/geral/1745549426217.png)![1745549426217](image/geral/1745549426217.png)
+##### 4.1.3. Escolha do gerencimento de perfil
+
+O cliente pode decidir com que tipo de dados o cliente pode interagir
+
+![1745549426217](image/geral/1745549426217.png)
+
+##### 4.1.4. O cliente pode escolher a forma como o usuário vai recuperar contas
 
 ![1745549438626](image/geral/1745549438626.png)
 
-É possível interagir com uma aplicação exemplo
+#### 4.1.5. Aplicação Exemplo
+
+O usuário tem um "playground" para verificar o comportamento do fluxo de autorização em uma aplicação exemplo.
 
 ![1745549557776](image/geral/1745549557776.png)
 
-### ClientSecret
+### 4.2. ClientSecret
 
-A aplicação contém um clientSecret associado
+##### 4.2.1. Tela de ClientSecret
 
 ![1745549638630](image/geral/1745549638630.png)
+
+##### 4.2.2. Geração de novo ClienteSecret
 
 É possível gerar um novo secret mantendo a compatibilidade com o antigo
 
 ![1745549713286](image/geral/1745549713286.png)
 
+Na geração de um novo clientSecret, o cliente pode selecionar o período em que o clientSecret anterior permanecerá válido, permitindo que a rotação do clientSecret seja um processo sem atrito.
+
 ![1745549723937](image/geral/1745549723937.png)
 
-Sendo possível selecionar o período onde os dois secrets vão funcionar
-
-possível gerar novo secret para uma aplicação existente
-
-Não há menção a expiração de client_secret (nem após desuso nem período padrão)
+Não há menção a expiração de client_secret (nem após inatividade nem período padrão) indicando que não há expiração definida.
 
 ![1745555022529](image/geral/1745555022529.png)
 
-O secret não expira após certo tempo em desuso
-
-É possível manter dois simultâneos
+Há uso de urls próprias a cada cliente
 
 ![1745549906250](image/geral/1745549906250.png)
 
-### Auditoria e Monitoramento
+### 4.3. Auditoria e Monitoramento
 
 Ele traz a informação de quem leu o secret, em que horário
 
@@ -207,8 +293,6 @@ Com o seguinte detalhamento
 > }
 > }
 
-
-
 É possível criar recursos personalizados (e consequentemente escopos personalizados). ![1745552033670](image/geral/1745552033670.png)
 
 É possível criar alertas
@@ -217,17 +301,225 @@ Com o seguinte detalhamento
 
 ![1745552542848](image/geral/1745552542848.png)
 
-painel de logins
+## 4.4. Comportamento de inatividade
 
-## Consolidação
+Foram pesquisados os seguintes termos e não foi localizada nenhuma informação em relação ao inatividade.
+
+[PingOne Platform API Reference](https://apidocs.pingidentity.com/pingone/platform/v1/api/#credential-types)
+
+* Inactivity
+* Suspension
+* Lifecycle
+* Cleanup
+* Expiry
+
+É possível verificar o momento do último login, sendo isso insumo para a inativação de aplicativo em inatividade [ds-last-login-time | PingDS](https://docs.pingidentity.com/pingds/7.2/schemaref/at-ds-last-login-time.html).
+
+## 5. Microsoft Entra
+
+Para criação de conta de uso no Microsoft Entra, é necessário associar um CNPJ ou que o administrador já em posse de um CNPJ associe.[^3] Portanto, nesse caso específico, os dados colhidos foram feitos com base somente em documentação.
+
+### 5.1. Cadastro de novo software
+
+### 5.2. ClientSecret
+
+"You can associate only one client ID with your add-in, but you can associate multiple client secrets with a client ID. For security and administrative purposes, we recommend limiting the number of client secrets associated with a client ID."[^4]
+
+"Choose how long your client secret is valid for. The options are one, two, or three years. We recommend choosing one year, because it might be easier to track within your business processes than longer time periods. But there's no security implication to choosing two or three years. When the client secret is expiring, you need to update your add-in."[^5]
+
+É possível cadastrar um novo client secret simultaneamente ao atual. Eles trazem as situações onde isso é recomendado. Não há nenhuma menção a inativação automática de software em inatividade.[^6]
+
+![1745580721442](image/geral/1745580721442.png)
+
+### 5.3. Auditoria e Monitoramento
+
+São salvos logs durante o período de 30 dias e é possível utilizar o sistema de notificações e alertas para ter uma visão ampla de como está a saúde da aplicação [^7]
+
+![1745845734632](image/geral/1745845734632.png)
+
+![1745845854948](image/geral/1745845854948.png)
+
+### 5.4. Comportamento de inatividade
+
+Após período de 90 dias sem criação de token, é feita uma recomendação para a inativação do aplicativo.
+
+![1745580823120](image/geral/1745580823120.png)
+
+## 6. Google Cloud
+
+### 6.1. Cadastro de novo software
+
+![1745597759021](image/geral/1745597759021.png)
+
+![1745597940440](image/geral/1745597940440.png)
+
+![1745597960822](image/geral/1745597960822.png)
+
+![1745598015490](image/geral/1745598015490.png)
+
+![1745597999096](image/geral/1745597999096.png)![1745598075011](image/geral/1745598075011.png)
+
+![1745598104023](image/geral/1745598104023.png)
+
+![1745597759021](https://file+.vscode-resource.vscode-cdn.net/c%3A/Users/F1376874/OneDrive%20-%20Banco%20do%20Brasil%20S.A/OAT/benchmarking%20mercado%20clientSecret2/benchmarking%20clientSecret/image/geral/1745597759021.png)
+
+### 6.2. ClientSecret
+
+##### 6.2.1. Rotação de ClientSecret
+
+![1745598160222](image/geral/1745598160222.png)
+
+##### 6.2.2. Desativação de secret
+
+![1745598735559](image/geral/1745598735559.png)
+
+##### 6.2.3. Exclusão de secret
+
+![1745598709489](image/geral/1745598709489.png)
+
+### 6.3. Auditoria e Monitoramento
+
+O google api não conta com logs para auditoria mas possui um dashboard para uma visão ampla da utilização da aplicação.
+
+![1745604426235](image/geral/1745604426235.png)
+
+### 6.4. Comportamento de inatividade
+
+[^8]A notificação de não uso da aplicação se dá após 90 dias sem nenhum acionamento de autenticação.
+
+![1745846180263](image/geral/1745846180263.png)
+
+## 7. Usuário Impessoal
+
+**usuários são bloqueados após x tempo sem uso?**
+
+Não há instrução normativa para isso, apenas os casos listados na IN423
+
+2.2.7.1.1 O Código de Usuário também pode ser excluído por inatividade de acordo com os seguintes prazos:
+
+2.2.7.1.1.1 "Z": após 365 dias;
+
+2.2.7.1.1.2 "T": após 60 dias;
+
+2.2.7.1.1.3 "C": após 60 dias;
+
+2.2.7.1.1.4 "E": após 60 dias;
+
+2.2.7.1.1.5 "A": após 60 dias.
+
+2.2.7.1.2 A exclusão por inatividade não se aplica aos usuários do tipo F.
+
+**atualmente é possível gerar mais de uma senha para um mesmo usuário impessoal?**
+
+Simultaneamente não é possível. Mas existe o cofre de senhas que tem modos de gestão ativa de senha, trocando a mesma a cada operação.
+
+**os usuários são notificados da necessidade de alterar e como (email, etc)?**
+
+o custodiante do usuário impessoal é responsável direto pela sua manutenção de senha. Na sua ausência, um novo custodiante é atribuído ao usuário. Em casos excepcionais, a equipe USD/IAM/Acessos Críticos avoca a permissão e realiza a manutenção desejada, mas isso tem normativo e ocorre apenas em casos bem definidiso.
+
+**há algum acompanhamento de quanto tempo um usuário impessoal está sem uso?**
+
+há ações em andamento para a identificação de consumo deste usuário, no entanto, o melhor acompanhamento é no log de usabilidade da autenticação.
+
+**há um acompanhamento de quais usuários acessaram tal recurso através de um usuário impessoal?**
+
+A definição de usabilidade do usuário está direcionado ao ambiente que ele está autorizado a ser utilizado. Por exemplo, um usuário impessoal do DB2-D3G4 só conseguirá se conectar em um SGBD DB2 e na instância D3G4, caso ele tente acessar um recurso de um Mainframe ele não será reconhecido, pois há processos que aderem o sistema ACESSO e replicam os usuários para o ambiente, e juntamente com o método de autorização RBAC do ACESSO ele fecha a autenticação e a autorização do usuário nos recurosos desse ambiente.
+
+## X. Citibank
+
+### 8.1. Cadastro de novo software
+
+![1746452520547](image/geral/1746452520547.png)
+
+![1746452568055](image/geral/1746452568055.png)
+
+![1746453034156](image/geral/1746453034156.png)
+
+extremamente enxuto
+
+## 8. Consolidação
+
+| pergunta                                                                                     |       oauth0       |        okta        |    PingIdentity    |   Amazon Cognito   | Microsoft Entra | Google | usuário impessoal BB | citibank* |
+| -------------------------------------------------------------------------------------------- | :----------------: | :----------------: | :----------------: | :----------------: | :-------------: | :-----: | :-------------------: | --------- |
+| é possível alterar o clientSecret da aplicação (sem criar uma aplicação nova)?         |        sim        |        sim        |        sim        |        não        |       sim       |   sim   |          n/a          | não      |
+| é possível manter dois clientSecrets funcionando simultaneamente?                          |        não        |        sim        |        sim        |        não        |       sim       |   sim   |         não         | não      |
+| é possível configurar um tempo de expiração para o clientSecret na criação de um novo? |        n/a        |        sim        |        sim        |        n/a        |      não      |  não  |         não         | não      |
+| os clientSecrets tem um tempo de expiração inerente                                        |        não        |        não        |        não        |        não        |       sim       |  não  |         não         | não      |
+| cada aplicação tem um url distinta para acionar as apis?                                   |        sim        |        sim        |        sim        |        sim        |        ?        |  não  |          n/a          | não      |
+| conta com logs?                                                                              |        sim        |        sim        |        sim        |        sim*        |       sim       |  sim*  |          sim          | não      |
+| expiração de usuários                                                                     |        não        |        não        |        não        |        não        |      não      |  não  |    60 ou 365 dias    | não      |
+| notificação em caso de não-acionamento da api por conta de acesso                         | insumos fornecidos | insumos fornecidos | insumos fornecidos | insumos fornecidos |     90 dias     | 90 dias |  insumos fornecidos  | não      |
+| é possível visualizar as credenciais após criadas?                                        |        sim        |        sim        |        sim        |        sim        |       sim       |   sim   |          n/a          | não      |
+
+*é uma parte paga da ferramenta
+Nos casos onde os insumos são fornecidos, não é feita uma notificação direta ao usuário mas ele tem acesso a informações que permitam ações em relação ao uso de sua aplicação.
+
+8.1. Rotação de ClientSecrets
+
+* Desenvolver recomendações claras e acessíveis para clientes sobre a importância da rotação periódica de clientSecrets.
+* Implementar um sistema de alertas que notifique clientes sobre períodos recomendáveis para rotação e inativação, por exemplo após período em inatividade.
+* Verificar a possibilidade de o cliente configurar um período para inativação após período em inatividade, similar aos workflows do oauth0 (seção 2.4), por exemplo.
+
+8.2. Logs e Auditoria
+
+* Avaliar a viabilidade da implementação de um sistema de logs semelhante ao do Okta (presente na seção 3.3 do estudo).
+* Explorar formatos padronizados de logs para facilitar auditorias e análises de segurança.
+* Verificar a viabilidade de um dashboard de visualização geral dos dados pelo cliente.
+
+8.3. URLs Distintas para Aplicações
+
+* Isolamento de aplicações: Cada aplicação tem seu próprio endpoint, reduzindo o risco de acessos indevidos e garantindo que credenciais e tokens sejam vinculados apenas à aplicação correta.
+* Facilidade de aplicação de políticas de segurança: Permite configurar regras específicas para cada aplicação, como autenticação multifator, listas de controle de acesso (ACL) e auditoria de logs.
 
 
-| pergunta                                                                             | oauth0 | okta | PingIdentity | Amazon Cognito |
-| ------------------------------------------------------------------------------------ | ------ | ---- | ------------ | -------------- |
-| é possível alterar o clientSecret da aplicação (sem criar uma aplicação nova)? | sim    | sim  | sim          |                |
-| é possível manter dois clientSecrets funcionando simultaneamente?                  | não   | sim  | sim          |                |
-| é possível configurar um tempo de funcionamento para o clientSecret antigo?        | n/a    | sim  | sim          |                |
-| os clientSecrets tem um tempo de expiração inerente                                | não   | não | não         |                |
-| cada aplicação tem um url distinta para acionar as apis?                           | sim    |      | sim          |                |
 
-## Links Utilizados
+Citibank
+
+OCBC Bank
+
+National Bank of Greece
+
+Deutsche Bank
+
+Nordea
+
+ANB-Amro
+
+SEB
+
+BBVA
+
+Mercado Pago
+
+Itau
+
+Banco Original
+
+Pag Seguro
+
+Sicoob
+
+Santander
+
+
+## 9. Links Utilizados
+
+[^1]: [Application-specific settings with app clients - Amazon Cognito](https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-settings-client-apps.html)
+    
+[^2]: [Client secret rotation and key management | Okta Developer](https://developer.okta.com/docs/guides/client-secret-rotation-key/main/)
+    
+[^3]: [Criar um locatário de desenvolvedor gratuito do Microsoft Entra - Microsoft Entra Verified ID | Microsoft Learn](https://learn.microsoft.com/pt-br/entra/verified-id/how-to-create-a-free-developer-account)
+    
+[^4]: [Create or Update Client IDs and Secrets in Partner Center - Marketplace publisher | Microsoft Learn](https://learn.microsoft.com/en-us/partner-center/marketplace-offers/create-or-update-client-ids-and-secrets)
+    
+[^5]: [Create or Update Client IDs and Secrets in Partner Center - Marketplace publisher | Microsoft Learn](https://learn.microsoft.com/en-us/partner-center/marketplace-offers/create-or-update-client-ids-and-secrets)
+    
+[^6]: [Recomendação para remover aplicativos não utilizados - Microsoft Entra ID | Microsoft Learn](https://learn.microsoft.com/pt-br/entra/identity/monitoring-health/recommendation-remove-unused-apps?tabs=microsoft-entra-admin-center)
+    
+[^7]: [Como configurar notificações por e-mail de Saúde (prévia) - Microsoft Entra ID | Microsoft Learn](https://learn.microsoft.com/pt-br/entra/identity/monitoring-health/howto-configure-health-alert-emails?tabs=microsoft-entra-admin-center)
+    
+[^8]: [Informações gerais sobre as contas de serviço  |  IAM Documentation  |  Google Cloud](https://cloud.google.com/iam/docs/service-account-overview?hl=pt-br)
+    
+[^9]: [Find unused AWS credentials - AWS Identity and Access Management](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_finding-unused.html)
+    
+[^10]: [OAuth log events - Cloud Identity Help](https://support.google.com/cloudidentity/answer/6124308?hl=en)
