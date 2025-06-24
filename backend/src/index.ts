@@ -1,9 +1,19 @@
 import express from 'express';
+import mongoose from 'mongoose';
+
+mongoose.connect('mongodb://localhost:27017/oauth', {}).then(() => {
+  console.log('MongoDB connected');
+}).catch(err => {
+  console.error('MongoDB connection error:', err);
+});
+
+
 
 const app = express();
 type Request = express.Request;
 type Response = express.Response;
 import { Router } from 'express';
+import authRouter from './authRoutes.ts'; 
 const route = Router()
 
 app.use(express.json())
@@ -17,6 +27,7 @@ route.get('/', (req: Request, res: Response) => {
 })
 
 app.use(route)
+app.use(authRouter)
 
 
 app.listen(3333, () => 'server running on port 3333')
