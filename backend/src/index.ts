@@ -13,7 +13,7 @@ const app = express();
 type Request = express.Request;
 type Response = express.Response;
 import { Router } from 'express';
-import authRouter from './authRoutes.ts'; 
+import authRouter from './authRoutes'; 
 const route = Router()
 
 app.use(express.json())
@@ -30,4 +30,6 @@ app.use(route)
 app.use(authRouter)
 
 
-app.listen(3333, () => 'server running on port 3333')
+app.listen(3333, () => {
+  console.log('server running on port 3333')
+})

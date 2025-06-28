@@ -11,8 +11,9 @@ type Response = express.Response;
 import { Router } from 'express';
 const authRouter = Router();
 
-import User from '../models/userModel.ts';
+import User from './models/userModel';
 import { create } from 'domain';
+import { Error } from 'mongoose';
 
 authRouter.get('/authorize', (req: Request, res: Response) => {
   res.json({ message: "here's is your token good man" });
@@ -35,7 +36,7 @@ authRouter.post('/register', async (req: Request, res: Response) => {
     const user = new User({ username, password: hashedPassword, email });
     await user.save();
     res.status(201).json({ message: 'User created', user });
-  } catch (err) {
+  } catch (err: any) {
     res.status(400).json({ error: err.message });
   }
 });

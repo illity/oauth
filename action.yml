@@ -1,0 +1,6 @@
+name: 'Run backend'
+description: 'This action intends to run the backend'
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
