@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register</title>
+</head>
+<body>
+  <h1>Simple Registration</h1>
+
+  <form id="registerForm">
+    <label>
+      Username:
+      <input type="text" id="username" required />
+    </label>
+    <br />
+    <label>
+      Password:
+      <input type="password" id="password" required />
+    </label>
+    <br />
+    <label>
+      Email:
+      <input type="email" id="email" required />
+    </label>
+    <br />
+    <button type="submit">Register</button>
+  </form>
+
+  <pre id="response"></pre>
+
+  <script>
+    const form = document.getElementById('registerForm');
+    const responseBox = document.getElementById('response');
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const payload = {
+        username: document.getElementById('username').value,
+        password: document.getElementById('password').value,
+        email: document.getElementById('email').value
+      };
+
+      try {
+        const res = await fetch('https://oaauth.loophole.site/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'User-Agent': 'insomnia/10.3.0'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        responseBox.textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        responseBox.textContent = 'Error: ' + err.message;
+      }
+    });
+  </script>
+</body>
+</html>
