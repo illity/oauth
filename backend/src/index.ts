@@ -13,8 +13,6 @@ mongoose.connect(mongoUrl, {}).then(() => {
   console.error('MongoDB connection error:', err);
 });
 
-
-
 const app = express();
 type Request = express.Request;
 type Response = express.Response;
